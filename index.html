@@ -267,7 +267,7 @@ input[type=range]{width:100%;accent-color:var(--orange)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 /* ================= Orbit core ================= */
-const APP_VERSION = '1.1';
+const APP_VERSION = '1.2';
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1630,6 +1630,7 @@ function openSettings() {
     <p class="small muted" style="margin-top:4px">Everything lives only on this phone. Back up regularly, and use a backup file to share with your partner: they choose “Merge a backup” and both phones end up with everything.</p>
     <div class="row wrap"><button class="btn gold" data-s="export">Back up or share</button><label class="btn">Merge a backup<input type="file" id="bk" accept=".json,application/json" hidden></label><button class="btn" data-s="snaps">Undo history</button></div>
     <button class="btn danger" style="margin-top:14px" data-s="wipe">Erase everything on this phone</button>
+    <button class="btn" style="margin-top:14px" data-s="update">Check for updates</button>
     <p class="tiny faint" style="margin-top:16px">Orbit ${APP_VERSION}. ${S.txns.length} transactions stored. Last backup: ${S.settings.lastBackup ? new Date(S.settings.lastBackup).toLocaleDateString('en-ZA') : 'never'}.</p>`, (el, api) => {
     $$('[data-pp]', el).forEach(i => i.addEventListener('change', () => { const [ix, k] = i.dataset.pp.split(':'); S.people[ix][k] = k === 'age' ? (+i.value || '') : (i.value.trim() || S.people[ix][k]); save(); render(); }));
     $$('[data-st]', el).forEach(i => i.addEventListener('change', () => { S.settings[i.dataset.st] = +i.value || S.settings[i.dataset.st]; save(); render(); }));
@@ -1640,6 +1641,7 @@ function openSettings() {
       const b = e.target.closest('[data-s]'); if (!b) return;
       const s = b.dataset.s;
       if (s === 'export') exportBackup();
+      if (s === 'update') checkForUpdate(true);
       if (s === 'cats') { api.close(); manageCats(); }
       if (s === 'rules') { api.close(); manageRules(); }
       if (s === 'accs') { api.close(); manageAccounts(); }
@@ -1734,6 +1736,23 @@ function onboarding() {
   });
 }
 
+/* ---------- updates ---------- */
+async function checkForUpdate(manual) {
+  if (window.self !== window.top || !('caches' in window)) { if (manual) toast('Updates apply to the installed app'); return; }
+  try {
+    const r = await fetch('./index.html?check=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) throw new Error('offline');
+    const txt = await r.text();
+    const m = txt.match(/APP_VERSION = '([\d.]+)'/);
+    if (!m || m[1] === APP_VERSION) { if (manual) toast('You’re on the latest version (' + APP_VERSION + ')'); return; }
+    const fresh = new Response(txt, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    for (const k of await caches.keys()) if (k.startsWith('orbit')) { const c = await caches.open(k); await c.put('./index.html', fresh.clone()); await c.put('./', fresh.clone()); }
+    try { const reg = await navigator.serviceWorker.getRegistration(); reg && reg.update(); } catch (e) {}
+    if (manual || (!UI.imp && !sheetStack.length)) { await snapshot('Before updating to ' + m[1]); location.reload(); }
+    else toast('Version ' + m[1] + ' is ready; it loads next time you open Orbit');
+  } catch (e) { if (manual) toast('Couldn’t check: you need internet for updates'); }
+}
+
 /* ================= events & start ================= */
 document.addEventListener('click', e => {
   if (!e.target.closest('#app')) return;
@@ -1774,7 +1793,10 @@ document.addEventListener('click', e => {
   render();
   if (!S.settings.onboarded) onboarding();
   try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (e) {}
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai|claudeusercontent/.test(location.hostname)) navigator.serviceWorker.register('sw.js').catch(() => {});
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost') && !/claude\.ai|claudeusercontent/.test(location.hostname)) {
+    navigator.serviceWorker.register('sw.js').then(reg => { try { reg.update(); } catch (e) {} }).catch(() => {});
+    setTimeout(() => checkForUpdate(false), 1500);
+  }
 })();
 
 </script>
