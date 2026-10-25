@@ -267,7 +267,7 @@ input[type=range]{width:100%;accent-color:var(--orange)}
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 /* ================= Orbit core ================= */
-const APP_VERSION = '1.0';
+const APP_VERSION = '1.1';
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -324,22 +324,23 @@ function defaultCategories() {
 
 /* ---------- built-in South African merchant rules ---------- */
 const BUILTIN_RULES = [
-  [/\b(CHECKERS|SHOPRITE|PICK ?N ?PAY|PNP|WOOLWORTHS FOOD|WW FOOD|SPAR|SUPERSPAR|KWIKSPAR|FOOD LOVER|FRUIT ?& ?VEG|USAVE|BOXER|OK FOODS|MAKRO|SIXTY60|CHECKERS SIXTY|PNP ASAP|BUTCHER|WOOLIES FOOD)\b/, 'groceries'],
-  [/\b(UBER ?EATS|MR ?D|MRD|NANDO|KFC|STEERS|WIMPY|SPUR|MUGG|VIDA E|STARBUCKS|MCDONALD|BURGER KING|DEBONAIRS|ROMAN'?S|DOMINO|OCEAN BASKET|CAFE|COFFEE|RESTAURANT|PIZZA|SUSHI|BISTRO|GRILL|TASHAS|SEATTLE|BOOTLEGGER|FISHAWAYS|CHICKEN LICKEN|KAUAI|PANAROTTIS|RJ'?S|HUSSAR)\b/, 'eating'],
+  [/\b(CROSS BORDER|CROSSBORDER|FOREX FEE|EXCHANGE FEE|SERVICE CHARGE)\b/, 'fees'],
+  [/\b(CHECKERS|SHOPRITE|PICK ?N ?PAY|PNP|WOOLWORTHS FOOD|WW FOOD|SPAR|SUPERSPAR|KWIKSPAR|FOOD LOVER|FRUIT ?& ?VEG|USAVE|BOXER|OK FOODS|MAKRO|SIXTY60|CHECKERS SIXTY|PNP ASAP|BUTCHER|SLAGHUIS|SLAGHUYS|LIQUOR\w*|TOPS|NORMAN GOODFELLOWS|WOOLIES FOOD)\b/, 'groceries'],
+  [/\b(UBER ?EATS|MR ?D|MRD|NANDO|KFC|STEERS|WIMPY|SPUR|MUGG|VIDA E|STARBUCKS|MCDONALD|BURGER KING|DEBONAIRS|ROMAN'?S|DOMINO|OCEAN BASKET|CAFE|COFFEE|RESTAURANT|PIZZA|SUSHI|BISTRO|GRILL|TASHAS|SEATTLE|BOOTLEGGER|FISHAWAYS|CHICKEN LICKEN|KAUAI|PANAROTTIS|RJ'?S|HUSSAR|MCD|PAPACHINOS|PIE|BAKERY|BACKERY|BAKERS|DOUGHNUT|KRISPY|MUGG ?& ?BEAN)\b/, 'eating'],
   [/\b(ENGEN|SHELL|BP |BP$|SASOL|CALTEX|TOTAL ?ENERGIES|TOTAL |ASTRON|FUEL|PETROL|GARAGE|FILLING)\b/, 'fuel'],
   [/\b(UBER(?! ?EATS)|BOLT|GAUTRAIN|SANRAL|E ?TOLL|TOLL|PARKING|PARKADE|TAXI|LYFT)\b/, 'transport'],
   [/\b(WESBANK|MFC|MERCEDES|MBFS|VEHICLE FIN|VEH FIN|AUTO ?FIN|CAR FIN|TYRE|TIRE|SUPA ?QUICK|TIGER WHEEL|MIDAS|AUTOZONE|SERVICE CENT|CAR WASH|LICENCE|LICENSE|AA )\b/, 'car'],
-  [/\b(RENT|RENTAL|LEVY|LEVIES|BODY CORP|HOMELOAN|HOME LOAN|BOND|LANDLORD|PROPERTY)\b/, 'housing'],
+  [/\b(RENT|RENTAL|LEVY|LEVIES|BODY CORP|HOMELOAN|HOME LOAN|BOND|LANDLORD|PROPERTY|PROPERTIES|ESTATE AGENT)\b/, 'housing'],
   [/\b(ESKOM|PREPAID ELEC|PREPAID ELECTRICITY|ELECTRICITY|CITY OF (JHB|JOHANNESBURG|EKURHULENI|TSHWANE|CAPE)|EKURHULENI|COJ|MUNICIPAL|RATES|WATER|CITY POWER|SYNTELL|CONLOG|ITRON)\b/, 'utilities'],
-  [/\b(VODACOM|MTN|TELKOM|CELL ?C|RAIN|AFRIHOST|VUMATEL|OPENSERVE|WEBAFRICA|COOL IDEAS|AXXESS|FROGFOOT|OCTOTEL|METROFIBRE|AIRTIME|DATA BUNDLE|STARLINK)\b/, 'phone'],
-  [/\b(NETFLIX|SHOWMAX|SPOTIFY|DSTV|MULTICHOICE|YOUTUBE|APPLE\.COM|APPLE COM|ITUNES|ICLOUD|GOOGLE ?PLAY|GOOGLE ONE|DISNEY|PRIME VIDEO|AMAZON PRIME|BOX OFFICE|DEEZER|CHATGPT|OPENAI|CLAUDE|ANTHROPIC|MICROSOFT|ADOBE|PATREON)\b/, 'subs'],
+  [/\b(VODACOM|MTN|TELKOM|CELL ?C|RAIN|AFRIHOST|VUMATEL|OPENSERVE|WEBAFRICA|COOL IDEAS|AXXESS|FROGFOOT|OCTOTEL|METROFIBRE|AIRTIME|DATA BUNDLE|STARLINK|INTERNET|FIBRE|WIFI)\b/, 'phone'],
+  [/\b(NETFLIX|SHOWMAX|SPOTIFY|DSTV|MULTICHOICE|YOUTUBE\w*|F1 TV|F1TV|APPLE\.COM|APPLE COM|ITUNES|ICLOUD|GOOGLE ?PLAY|GOOGLE ONE|DISNEY|PRIME VIDEO|AMAZON PRIME|BOX OFFICE|DEEZER|CHATGPT|OPENAI|CLAUDE|ANTHROPIC|MICROSOFT|ONEDRIVE|ADOBE|PATREON)\b/, 'subs'],
   [/\b(DISCOVERY HEALTH|BONITAS|MOMENTUM HEALTH|MEDSHIELD|FEDHEALTH|BESTMED|GEMS|POLMED|MEDIHELP|KEYHEALTH|PROFMED|SIZWE|MEDICAL AID|MED AID)\b/, 'medaid'],
-  [/\b(DIS ?CHEM|CLICKS|PHARM|DOCTOR|DR |DENTIST|DENTAL|OPTOM|SPEC ?SAVERS|PHYSIO|HOSPITAL|NETCARE|MEDICLINIC|LIFE HEALTHCARE|LANCET|AMPATH|PATHCARE|RADIOLOG|CLINIC|MEDICAL)\b/, 'health'],
+  [/\b(DIS ?CHEM|CLICKS|PHARM\w*|DOCTOR|DR |DENTIST|DENTAL|OPTOM|SPEC ?SAVERS|PHYSIO|HOSPITAL|NETCARE|MEDICLINIC|LIFE HEALTHCARE|LANCET|AMPATH|PATHCARE|RADIOLOG|CLINIC|MEDICAL)\b/, 'health'],
   [/\b(OUTSURANCE|DISCOVERY INSURE|SANTAM|KING ?PRICE|MIWAY|BUDGET INS|DIAL ?DIRECT|1ST FOR WOMEN|AUTO ?& ?GENERAL|HOLLARD|OLD MUTUAL INS|LIBERTY LIFE|SANLAM LIFE|MOMENTUM LIFE|INSURANCE|ASSURANCE|FUNERAL|LIFE COVER|NAKED INS|PRIME MEERKAT)\b/, 'insurance'],
-  [/\b(TAKEALOT|AMAZON|SUPERBALIST|BASH|MR ?PRICE|PEP|ACKERMANS|EDGARS|TRUWORTHS|FOSCHINI|MARKHAM|SPORTSMANS|TOTALSPORTS|CNA|INCREDIBLE|HIFI CORP|GAME |DIONWIRED|ISTORE|CASH ?CRUSADERS|CAPE UNION|SHEIN|TEMU|WOOLWORTHS|ZARA|H ?& ?M|COTTON ON|DUE SOUTH|CAPE ?STORM|OUTDOOR WAREHOUSE|BUILDERS|LEROY MERLIN|CASHBUILD)\b/, 'shopping'],
+  [/\b(TAKEALOT|AMAZON|SUPERBALIST|BASH|MR ?PRICE|PEP|ACKERMANS|EDGARS|TRUWORTHS|FOSCHINI|MARKHAM|SPORTSMANS|TOTALSPORTS|CNA|INCREDIBLE|HIFI CORP|GAME |DIONWIRED|ISTORE|CASH ?CRUSADERS|CAPE UNION|SHEIN|TEMU|WOOLWORTHS|ZARA|H ?& ?M|COTTON ON|DUE SOUTH|CAPE ?STORM|OUTDOOR ?WAREHOUSE|BUILDERS|LEROY MERLIN|CASHBUILD)\b/, 'shopping'],
   [/\b(MR ?PRICE HOME|@HOME|CORICRAFT|WEYLANDTS|DIAL ?A ?BED|BEDSHED|SLEEPMASTERS|HOME ?ETC|LOFTY|BOARDMANS|YUPPIECHEF|HOMECHOICE|OK FURNITURE)\b/, 'home'],
-  [/\b(PLAYSTATION|PSN|SONY|STEAM|XBOX|NINTENDO|EPIC GAMES|STER ?KINEKOR|NU ?METRO|COMPUTICKET|TICKETPRO|QUICKET|HOWLER|WEBTICKETS|BOWLING|GAMING|RAZER)\b/, 'fun'],
-  [/\b(VIRGIN ACTIVE|PLANET FITNESS|GYM|FITNESS|CROSSFIT|PARKRUN|STRAVA|ZWIFT)\b/, 'fitness'],
+  [/\b(PLAYSTATION|PSN|SONY|STEAM\w*|XBOX|NINTENDO|EPIC GAMES|STER ?KINEKOR|NU ?METRO|COMPUTICKET|TICKETPRO|QUICKET|HOWLER|WEBTICKETS|BOWLING|GAMING|RAZER)\b/, 'fun'],
+  [/\b(VIRGIN ACTIVE|PLANET FITNESS|GYM|FITNESS|GOLF|CLUBMASTER|PADEL|CROSSFIT|PARKRUN|STRAVA|ZWIFT)\b/, 'fitness'],
   [/\b(SALON|BARBER|HAIR|SPA|NAILS|SORBET|BEAUTY|COSMETIC|MAC COSMETICS|SKIN)\b/, 'care'],
   [/\b(GIFT OF THE GIVERS|SPCA|NSRI|CANSA|DONATION|CHARITY|FOUNDATION|CHURCH|TITHE|HOSPICE|SOS CHILDREN|WWF|BACKABUDDY|GIVENGAIN|NPC|NPO|PBO)\b/, 'gifts'],
   [/\b(FLYSAFAIR|AIRLINK|LIFT AIR|KULULA|SAA|SOUTH AFRICAN AIR|BRITISH AIRWAYS|EMIRATES|QATAR|BOOKING\.COM|BOOKING COM|AIRBNB|TRAVELSTART|PROTEA HOTEL|CITY LODGE|SUN INT|TSOGO|HOTEL|LODGE|SAFARI|SANPARKS|HERTZ|AVIS|EUROPCAR|BIDVEST CAR|TEMPEST)\b/, 'travel'],
@@ -357,6 +358,8 @@ const CREDIT_RULES = [
 ];
 const TRANSFER_RE = /\b(TRANSFER|TRF|TFR|INTERNAL|OWN ACC|OWN ACCOUNT|INTER ?ACC|INTER ?ACCOUNT|BETWEEN ACC|FROM SAVINGS|TO SAVINGS|CREDIT CARD PAYMENT|CC PAYMENT|CARD REPAYMENT|PAYMENT RECEIVED)\b/;
 
+// a long account number, or just another bank's name, usually means money moving between your own accounts
+const OWN_ACC_RE = /( \d{10,} |^ (CAPITEC|ABSA|FNB|NEDBANK|STANDARD BANK|STD BANK|TYMEBANK|TYME|DISCOVERY BANK|INVESTEC|AFRICAN BANK|BIDVEST BANK|BANK ZERO|OLD MUTUAL)( BANK)? $)/;
 const NOISE_RE = /\b(POS|CARD|PURCHASE|PURCH|LOCAL|INTL|INTERNATIONAL|DEBIT|ORDER|DEBIT ORDER|PMT|FNB|APP|PAYMENT|PAYMNT|PAY|SEND|MONEY|ONLINE|CONTACTLESS|TAP|WWW|COM|CO|ZA|PTY|LTD|RETAIL|ACB|DD|EFT|IB|MAGTAPE|RECURRING|SUBSCRIPTION|AUTH|CHEQUE|CHQ|ACC|ACCOUNT|NO|REF|REFERENCE|TO|FROM|THE|AND|VISA|MASTERCARD|MC|SA|JHB|JOHANNESBURG|GAUTENG|PRETORIA|SANDTON|ALBERTON|EDENVALE|KEMPTON|GREENSTONE|MALL|CENTRE|CENTER|SHOPPING|FOREIGN|PURCHASES|ON|AT|JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|SEPT|OCT|NOV|DEC|CREDIT|MAGTAPE|RECEIVED)\b/g;
 function merchantKey(desc) {
   let s = (' ' + String(desc).toUpperCase() + ' ').replace(/[*#\/\\.,:;_'"()\[\]+\-]/g, ' ');
@@ -373,10 +376,12 @@ function guessCategory(desc, amount, rules, cats) {
   if (TRANSFER_RE.test(U)) return { cat: 'transfer', sure: false, how: 'guess' };
   if (amount > 0) {
     for (const [re, id] of CREDIT_RULES) if (re.test(U)) return { cat: id, sure: true, how: 'built-in' };
-    for (const [re, id] of BUILTIN_RULES) if (re.test(U)) return { cat: 'refund', sure: false, how: 'guess' };
+    for (const [re, id] of BUILTIN_RULES) if (re.test(U) && !['fees', 'cash', 'invest', 'ra'].includes(id)) return { cat: id, sure: true, how: 'refund' };
+    if (OWN_ACC_RE.test(U)) return { cat: 'transfer', sure: false, how: 'guess' };
     return { cat: 'otherinc', sure: false, how: 'guess' };
   }
   for (const [re, id] of BUILTIN_RULES) if (re.test(U)) return { cat: id, sure: true, how: 'built-in' };
+  if (OWN_ACC_RE.test(U)) return { cat: 'transfer', sure: false, how: 'guess' };
   return { cat: 'other', sure: false, how: 'guess' };
 }
 
@@ -540,31 +545,57 @@ function statementEnd(lines) {
 function parseStatementLines(lines, opts = {}) {
   const endDate = statementEnd(lines) || ymd(new Date());
   let endY = +endDate.slice(0, 4), endM = +endDate.slice(5, 7);
-  const rows = []; let opening = null; let lastRow = null; let contLines = 0;
+  const rows = []; let opening = null; let lastRow = null; let contLines = 0; let closed = false; let pending = null;
+  const CLOSING = /(closing balance|balance carried forward|carried forward)/i;
+  const mkDate = (d) => { let y = d.y; if (!y) { y = endY; if (d.m > endM + 1) y = endY - 1; } return y + '-' + String(d.m).padStart(2, '0') + '-' + String(d.d).padStart(2, '0'); };
+  const cleanText = (line, cuts) => {
+    let desc = line;
+    for (const [a, b] of cuts.sort((x, y) => y[0] - x[0])) desc = desc.slice(0, a) + '  ' + desc.slice(b);
+    return desc.replace(/\s{2,}/g, '  ').replace(/^[\s\-|#*~]+|[\s\-|#*~]+$/g, '').replace(/\s{2,}/g, ' ')
+      .replace(/\b\d{1,2}[\/\-.]\d{1,2}([\/\-.]\d{2,4})?\b/g, '').replace(/\s~(\s|$)/g, ' ').replace(/\s{2,}/g, ' ').trim();
+  };
+  const FOOTER = /(registration|provider|page \d|ombud|www\.|\.co\.za|regulated|code of banking|vat |branch|statement|account number|private bank|authorised|financial services)/i;
+  const contOk = l => l.trim().length <= 45 && !FOOTER.test(l);
+  const finish = (row) => { rows.push(row); lastRow = row; contLines = 0; };
   for (const raw of lines) {
     const line = raw.replace(/\u00a0/g, ' ');
     if (!line.trim()) { lastRow = null; continue; }
     const money = findMoney(line);
     if (!money.length) { const h = statementEnd([line]); if (h) { endY = +h.slice(0, 4); endM = +h.slice(5, 7); } }
-    if (OPENING.test(line) && money.length) { const b = money[money.length - 1]; if (opening == null) opening = b.suf === 'dr' || b.sign === -1 && b.suf !== 'cr' ? -b.val : b.val; lastRow = null; continue; }
+    if (OPENING.test(line)) { if (money.length && opening == null) { const b = money[money.length - 1]; opening = balVal(b); } closed = false; lastRow = null; pending = null; continue; }
+    if (CLOSING.test(line)) { if (rows.length) closed = true; lastRow = null; pending = null; continue; }
     if (SKIP_LINE.test(line)) { lastRow = null; continue; }
-    const d = findDate(line);
+    if (closed) continue; // repeated lists after the main table (card or payment summaries) would double-count
+    let d = findDate(line);
     const dateInsideMoney = d && money.some(m => d.index < m.end && d.index + d.len > m.start);
-    if (d && !dateInsideMoney && money.length) {
-      let y = d.y;
-      if (!y) { y = endY; if (d.m > endM + 1) y = endY - 1; }
-      const date = y + '-' + String(d.m).padStart(2, '0') + '-' + String(d.d).padStart(2, '0');
-      let desc = line;
-      const cuts = [[d.index, d.index + d.len], ...money.map(m => [m.start, m.end])].sort((a, b) => b[0] - a[0]);
-      for (const [a, b] of cuts) desc = desc.slice(0, a) + '  ' + desc.slice(b);
-      desc = desc.replace(/\s{2,}/g, '  ').replace(/^[\s\-|#*]+|[\s\-|#*]+$/g, '').replace(/\s{2,}/g, ' ').trim();
-      desc = desc.replace(/\b\d{1,2}[\/\-.]\d{1,2}([\/\-.]\d{2,4})?\b/g, '').replace(/\s{2,}/g, ' ').trim();
-      if (!desc || /^(date|description|transaction|details|amount|balance)\b/i.test(desc)) { lastRow = null; continue; }
-      lastRow = { date, desc, money, line }; rows.push(lastRow); contLines = 0;
-    } else if (lastRow && !money.length && !d && line.trim().length < 70 && contLines < 2 && /[A-Za-z]{3}/.test(line)) {
+    if (d && dateInsideMoney) d = null;
+    if (d) {
+      // a second date straight after the first (posted date, then transaction date): use the transaction date
+      const cuts = [[d.index, d.index + d.len]];
+      let useD = d;
+      const rest = line.slice(d.index + d.len);
+      const d2 = findDate(rest);
+      if (d2 && d2.index <= 4) { cuts.push([d.index + d.len + d2.index, d.index + d.len + d2.index + d2.len]); useD = d2; }
+      const date = mkDate(useD);
+      if (money.length) {
+        const desc = cleanText(line, [...cuts, ...money.map(m => [m.start, m.end])]);
+        if (!desc || /^(date|description|transaction|details|amount|balance)\b/i.test(desc)) { lastRow = null; pending = null; continue; }
+        pending = null; finish({ date, desc, money, line });
+      } else {
+        const desc = cleanText(line, cuts);
+        pending = /[A-Za-z]{2}/.test(desc) && !/^(date|description|transaction|details|posted)\b/i.test(desc) ? { date, desc, line } : null;
+        lastRow = null;
+      }
+    } else if (pending && money.length) {
+      // amounts printed on their own line beside a wrapped description
+      const extra = cleanText(line, money.map(m => [m.start, m.end]));
+      finish({ date: pending.date, desc: (pending.desc + ' ' + extra).trim(), money, line: pending.line + ' ' + line });
+      pending = null;
+    } else if (pending && !money.length && contOk(line)) {
+      pending.desc += ' ' + line.trim();
+    } else if (lastRow && !money.length && contOk(line) && contLines < 2 && /[A-Za-z0-9]{3}/.test(line)) {
       lastRow.desc += ' ' + line.trim().replace(/\s{2,}/g, ' '); contLines++;
-    } else if (!money.length) { /* header or noise */ }
-    else lastRow = null;
+    } else if (money.length) lastRow = null;
   }
   // newest-first statements: process oldest-first so balance arithmetic works
   let reversed = false;
@@ -604,7 +635,9 @@ function parseStatementLines(lines, opts = {}) {
     });
   }
   if (reversed) out.reverse();
-  return { txns: out.sort((a, b) => a.date.localeCompare(b.date)), checks, matches, endDate };
+  const lastBal = [...out].reverse().find(t => t.balance != null);
+  const reconciled = opening != null && lastBal && !reversed ? Math.abs(round2(opening + sum(out.map(t => t.amount)) * flip) - lastBal.balance) < 0.02 : null;
+  return { txns: out.sort((a, b) => a.date.localeCompare(b.date)), checks, matches, endDate, opening, closing: lastBal ? lastBal.balance : null, reconciled };
 }
 function balVal(b) { return (b.suf === 'dr' || (b.sign === -1 && b.suf !== 'cr')) ? -b.val : b.val; }
 function matchesDelta(m, j, prev, flip) {
@@ -1179,6 +1212,8 @@ async function startImport(files, v) {
       let check = '';
       const off = res.checks - res.matches;
       if (res.checks > 3) check = !off ? 'Balances add up on every line.' : `${off} line${off > 1 ? 's' : ''} didn’t match the running balance; they’re under “Needs a look”.`;
+      if (res.reconciled === true) check += ` Opening ${fmtR(res.opening, true)} plus everything here equals the closing ${fmtR(res.closing, true)}.`;
+      else if (res.reconciled === false) check += ' The total doesn’t reach the closing balance, so a line may be missing.';
       notes.push({ f: f.name, msg: `${res.txns.length} transactions, ${range}. ${check}`, bad: res.checks > 3 && off / res.checks > 0.03 });
       res.txns.forEach(t => items.push(t));
     } catch (e) {
